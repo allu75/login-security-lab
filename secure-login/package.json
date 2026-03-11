@@ -1,9 +1,10 @@
 {
-  "name": "insecure-login",
+  "name": "secure-login",
   "type": "module",
   "private": true,
   "version": "1.0.0",
-  "main": "index.js",
+  "description": "Secure version of login application with security improvements",
+  "main": "src/server.js",
   "scripts": {
     "dev": "node src/server.js"
   },
