@@ -48,11 +48,13 @@ app.get("/debug/users", async (req, res) => {
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
-  const user = await get(`
-    SELECT id, email, password, role
-    FROM users
-    WHERE email = '${email}'
-  `);
+  const stmt = db.prepare(`
+  SELECT id, email, password, role
+  FROM users
+  WHERE email = ?
+`);
+
+  const user = stmt.get(email);
 
   if (!user) return res.status(404).json({ message: "User not found" });
 
