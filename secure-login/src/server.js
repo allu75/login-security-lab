@@ -1,6 +1,7 @@
 import express from "express";
 import session from "express-session";
 import { init, get, run, all } from "./db.js";
+import bcrypt from "bcrypt";
 
 const app = express();
 const PORT = process.env.PORT ?? 3000;
@@ -55,10 +56,12 @@ app.post("/login", async (req, res) => {
     [email]
   );
 
-  if (!user) return res.status(404).json({ message: "User not found" });
+  if (!user) return res.status(404).json({ message: "Invalid email or password" });
 
-  if (password !== user.password) {
-    return res.status(401).json({ message: "Wrong password" });
+  const valid = await bcrypt.compare(password, user.password);
+
+  if (!valid) {
+    return res.status(401).json({ message: "Invalid email or password" });
   }
 
   req.session.user = { id: user.id, email: user.email, role: user.role };
