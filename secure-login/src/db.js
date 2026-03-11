@@ -2,30 +2,30 @@ import { DatabaseSync } from "node:sqlite";
 
 const db = new DatabaseSync("./app.db");
 
-export const run = (sql) =>
+export const run = (sql, params = []) =>
   new Promise((resolve, reject) => {
     try {
-      const result = db.prepare(sql).run();
+      const result = db.prepare(sql).run(...params);
       resolve(result);
     } catch (err) {
       reject(err);
     }
   });
 
-export const get = (sql) =>
+export const get = (sql, params = []) =>
   new Promise((resolve, reject) => {
     try {
-      const row = db.prepare(sql).get();
+      const row = db.prepare(sql).get(...params);
       resolve(row);
     } catch (err) {
       reject(err);
     }
   });
 
-export const all = (sql) =>
+export const all = (sql, params = []) =>
   new Promise((resolve, reject) => {
     try {
-      const rows = db.prepare(sql).all();
+      const rows = db.prepare(sql).all(...params);
       resolve(rows);
     } catch (err) {
       reject(err);
